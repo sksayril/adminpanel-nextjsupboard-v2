@@ -8,6 +8,20 @@ if (!MONGODB_URI) {
   );
 }
 
+/**
+ * Global is used here to maintain a cached connection across hot reloads
+ * in development. This prevents connections from growing exponentially
+ * during API Route usage.
+ */
+interface MongooseCache {
+  conn: any;
+  promise: any;
+}
+
+declare global {
+  var mongoose: MongooseCache;
+}
+
 let cached = global.mongoose;
 
 if (!cached) {
